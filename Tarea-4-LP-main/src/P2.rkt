@@ -1,0 +1,63 @@
+#lang scheme  
+
+;; Aproximación de la serie de Taylor para la función seno
+;; Calcula el seno de x usando n términos de la expansión de la serie de Taylor
+;; taylorSenoSimple : entero -> real -> real
+;;
+;; n : Número de términos para aproximar el seno en la serie de Taylor
+;; x : Ángulo en radianes para el cual se calcula el valor del seno
+
+(define (taylorSenoSimple n x)
+  
+  ;; Función auxiliar para calcular el factorial de m
+  ;; factorial : entero -> entero
+  ;;
+  ;; m : Entero para el cual se computa el factorial
+  (define (factorial m)
+    (if (= m 0) 1 (* m (factorial (- m 1)))))
+  
+  ;; Caso base para la serie de Taylor: si n = 0, retornar x (primer término de la serie del seno)
+  ;; Caso recursivo: añadir el n-ésimo término al resultado recursivo de (n-1) términos
+  (if (= n 0) x
+      (+ (/ (* (expt -1 n)       ;; Signo alternante: (-1)^n
+               (expt x (+ (* 2 n) 1))) ;; x^(2n + 1), la potencia impar para el término del seno
+            (factorial (+ (* 2 n) 1))) ;; (2n + 1)!, factorial para la potencia impar
+         (taylorSenoSimple (- n 1) x)))) ;; Llamada recursiva para computar términos anteriores
+
+
+;; Aproximación de la serie de Taylor para la función coseno usando recursión de cola
+;; Calcula el coseno de x usando n términos de la expansión de la serie de Taylor
+;; taylorCosenoCola : entero -> real -> real
+;;
+;; n : Número de términos para aproximar el coseno en la serie de Taylor
+;; x : Ángulo en radianes para el cual se calcula el valor del coseno
+
+(define (taylorCosenoCola n x)
+
+  ;; Función auxiliar para calcular el factorial de m con acumulador
+  (define (factorial m acc)
+    (if (= m 0) acc
+        (factorial (- m 1) (* m acc)))) ;; Llamada recursiva en cola
+
+  ;; Función auxiliar para calcular los términos de la serie de Taylor del coseno
+  (define (taylorCos-aux n x i acumulador)
+  
+    ;; Caso base: si n es 0, retornar el resultado acumulado
+    (if (< n 0) acumulador
+        ;; Caso recursivo: calcular el siguiente término y actualizar el resultado
+        (letrec ((cambioSigno (expt -1 i)) 
+                 (expresionConX (expt x (* 2 i))) 
+                 (elFactorial (factorial (* 2 i) 1))
+                 (terminoI-esinmo (/ (* cambioSigno expresionConX) elFactorial))) 
+                (taylorCos-aux (- n 1) x (+ i 1) (+ acumulador terminoI-esinmo)))))
+  ;; Iniciar el cálculo con el primer término y el resultado acumulado inicial (1)
+  (taylorCos-aux n x 0 0))
+
+
+;; Ejemplo de uso:
+(taylorSenoSimple 300 3.14)
+(taylorCosenoCola 300 3.14)
+(taylorSenoSimple 1 2.14)
+(taylorCosenoCola 1 2.14)
+(taylorSenoSimple 0 20.3)
+(taylorCosenoCola 0 20.3)

@@ -1,0 +1,17 @@
+#lang scheme
+
+(define (rotar lista)
+  (append (cdr lista) (list (car lista))))
+
+(define (aplicar-funciones funciones numero rotaciones)
+  (if (= rotaciones 0)
+      ((car funciones) numero) ; Aplica la función al número
+      (aplicar-funciones (rotar funciones) ((car funciones) numero) (- rotaciones 1))))
+
+(define (evaluador funciones numeros)
+  (map (lambda (num) (aplicar-funciones funciones num (- (length funciones) 1))) numeros))
+
+;; Pruebas
+(evaluador (list (lambda (x) (+ x 1)) (lambda (x) (* x x)) (lambda (x) (- x 2))) '(2 5 7))
+(evaluador (list (lambda (x) (/ x 3.2)) (lambda (x) (+ (* x 2) x)) (lambda (x) (- x (* 5.40 (* x x))))) '(5 2 -7))
+(evaluador '() '())

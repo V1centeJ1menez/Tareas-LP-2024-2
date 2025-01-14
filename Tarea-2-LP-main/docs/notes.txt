@@ -1,0 +1,133 @@
+*********** CONSIDERACIONES *********** 
+
+- " El tablero sabe en todo momento a cuantos turnos les falta para que llegue la gran flota y el área en donde sabe que hay una posibilidad de acertar un misil. "
+- " Las cartas permiten elegir uno de los cañones a disparar y las coordenadas relativo al área del tablero. "
+
+
+*********** TABLERO *********** 
+
+
+
+ 1 |   |   |   |   |   |   |   |   |   |   |   |
+ 2 |   |   |   | O |   |   |   |   |   |   |   |
+ 3 |   | O |   |   |   |   |   |   |   |   |   |
+ 4 |   | X |   |   | O |   |   |   |   |   |   |
+ 5 |   | X |   |   |   |   |   |   |   |   |   |
+ 6 |   | X | O |   |   |   | O | O | O |   |   |
+ 7 |   | O | O |   |   |   | X | X | O |   |   |
+ 8 |   |   |   |   |   | O | O | O |   |   |   |
+ 9 |   |   |   |   |   |   |   |   |   |   |   |
+ 10|   |   |   |   |   |   |   |   |   |   |   |
+ 11|   |   |   |   |   |   |   |   |   |   |   |
+
+
+ |   |   |   |   |   |   |   |   |   |   |   |
+ |   |   |   |   |   |   |   |   |   |   |   |
+ |   |   |   |   |   |   |   |   |   |   |   |
+ |   |   |   |   |   |   |   |   |   |   |   |
+ |   |   |   |   |   |   |   |   |   |   |   |
+ |   |   |   |   |   |   |   |   |   |   |   |
+ |   |   |   |   |   |   |   |   |   |   |   |
+ |   |   |   |   |   |   |   |   |   |   |   |
+ |   |   |   |   |   |   |   |   |   |   |   |
+ |   |   |   |   |   |   |   |   |   |   |   |
+ |   |   |   |   |   |   |   |   |   |   |   |
+
+
+Las X representan un acierto, los O representan un fallo y los espacios en blanco donde
+no se ha disparado.
+
+
+
+*********** CARTAS ***********
+ 
+- Representan los métodos de disparo disponibles que tienen los cañones
+- Cinco cartas a la vez son disponibles, uno para cada cañon.
+- Se selecciona una carta y luego el sistema pide ingresar una coordenada del tablero como objetivo del misil y la carta es usada.
+- El sistema luego escoge aleatoriamente otro tipo de carta (o la misma) dependiendo del estado actual del cañon producto del disparo realizado.
+- Para la implementacion de este sistema, cada carta puede ser representado por un puntero a una funcion que recibe dos parametros (las coordenadas del tablero), y que retorne otro puntero a una funcion del mismo tipo de funcion
+- Las cartas son ilimitadas (a excepción de una) qu es la de 500KG pq deja incapacitado el cañon permanentemente.
+
+
+
+*********** PRUEBAS *********** 
+
+- Escenarios simulables:
+
+    * Facil:    Un tablero 11x11
+                2 barcos tamaño 1x2
+                1 barco tamaño 1x3
+                1 barco tamaño 1x4
+                1 barco tamaño 1x5
+                Limite de 30 turnos
+    
+    * Medio:    Un tablero 17x17
+                3 barcos tamaño 1x2
+                2 barco tamaño 1x3
+                1 barco tamaño 1x4
+                1 barco tamaño 1x5
+                Limite de 35 turnos
+
+    * Dificil:  Un tablero 21x21
+                3 barcos tamaño 1x2
+                2 barco tamaño 1x3
+                2 barco tamaño 1x4
+                2 barco tamaño 1x5
+                Limite de 15 turnos
+    
+
+- Un turno consiste en usar SOLO UNA carta.
+- Al momento de iniciar el tablero, se posicionan los barcos correspondientes a la dificultad de manera aleatoria.
+- Pueden estar verticales u horizotalmente.
+- Si se logran hundir todos los barcos antes del límite de turnos, significará que será posible realizar una defensa exitosa. De lo contrario, la defensa fracasará.
+- En ambos casos se debe REVELAR EL TABLERO FINAL CON LOS BARCOS QUE SOBREVIVIERON y terminar el programa.
+
+*********** ENTREGA *********** 
+- Orden e indentacion correcta
+- Archivos: 
+    · CityDefender.c: Contiene la fucnion main 
+    · Cartas.c: implementaciones
+    · Cartas.h: Declaraciones
+    · Tablero.c: implementaciones
+    · Tablero.h: Declaraciones
+    · Makefile
+    · README.txt
+- Se pueden crear funciones, estructuras o definiciones convenientes, como atributos a la estructura existente.
+- Uso obligatorio de void*** tablero
+- No se pueden cambiar parametros, retornos, firmas, como tambien agregar parametros a las funciones mencionadas en el enunciado (codigo base)
+- Funciones deben ir comentadas, Descripción breve, parametros y retorno.
+- MAKEFILE: debe compilar TODOS los archivos mediante compilación separada.
+- Comprimir en tar.gz
+- Debe haber README.txt
+- Max 11 sept a las 23:55
+
+
+*********** Clasificación *********** 
+
+-Entrega minima:
+    · Tablero inicia en dificultad facil, asignando espacio en heap en la variable void ***tablero con acceso global
+    · El tablero se inicia y borra con malloc y free, no deben haber leaks
+    · Genera los barcos en posicion y orientacion aleatoria. Y el programa termina mostrando el tablero revelando la posicion de los barcos.
+
+Caracteristicas y Funcionalidad:
+    · Utilizar headers para delcarar funciones, estructuras, variables y definiciones correspondientes,
+    · Programa y usa al menos la carta de disparo simple, marcando si el disparo falló o acertó en el tablero.
+    · Programa y usa todas las cartas disponibles según lo descrito en el enunciado.
+    · Almacena y utiliza los punteros a funciones en la estructura Mano para la funcionalidad de seleecionar y usar las cartas
+    · El programa termina cuando se acierten a todos los barcos del tablero o si supera el limite de turnos
+    · El programa permite seleccionar las dificultades Facil, Medio y Dificil, creando el tablero, los barcos y el límite de turnos correspondientes
+    · utiliza una interfaz calara y precisa, sin la necesidad de predecir las entradas o salidas del usuario.
+
+*********** Descuentos *********** 
+
+    · Falta de orden
+    · Falta de comentarios
+    · Codigo no compila reprobatoria
+    · Compilacion Unificada
+    · Warning 5 pts cada uno 
+    · Falta MAKEFILE reprobatoria
+    · Porcentaje de leak de memoria (averiguar)
+    · Falta README
+    · Falta info README
+    · Atrado
+    · Mal nombre de archivo o info
